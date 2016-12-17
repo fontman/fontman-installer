@@ -1,8 +1,15 @@
+""" artifacts
+
+Contains all information on latest releases.
+"""
+
 # fontman info
 version = "0.1.0-SNAPSHOT"
 
+# base url for artifacts
+base_url = ""
 
-# URLs for fontman sources
+# fontman sources
 fms_darwin_86 = ""
 fms_darwin_64 = ""
 fms_linux_86 = ""

@@ -1,6 +1,7 @@
 """ install fontman
 
 Fontman installer application.
+This script is to determine platform type and run the appropriate py script.
 """
 
 import platform
@@ -36,7 +37,7 @@ class MainWindow(QtGui.QMainWindow):
         self.process.finished.connect(lambda: p('Finished!'))
 
         print('Starting process')
-        self.process.start('python', ['linux.py'])
+        self.process.start('python3', ['linux.py'])
 
     def append(self, text):
         cursor = self.textEdit.textCursor()
