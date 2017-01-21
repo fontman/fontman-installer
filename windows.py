@@ -1,18 +1,18 @@
-""" linux installer
+""" windows installer
 
-Install fontman on Linux platforms
+Install fontman on Windows platforms
 """
 
 import os, shutil, stat, time, wget
 from os.path import expanduser
 
-from artifacts import base_url, fms_linux_64, fms_linux_86, gui_linux_64, \
-    gui_linux_86, version
+from artifacts import base_url, fms_win_32, fms_win_86, gui_win_32,\
+    gui_win_86, version
 from install import arch, print_info
 
 
-def download_file(url):
-    print("downloading " + url)
+def download_file(url, out_dir):
+    print("downloading " + url, out=out_dir)
     wget.download(url)
 
 
@@ -21,7 +21,7 @@ def execute_mode(file):
     os.chmod(file, stat.S_IXGRP)
 
 
-def extract_archive(file_name, dest, type='gztar'):
+def extract_archive(file_name, dest, type='zip'):
     print("extracting " + file_name + " to " + dest)
     shutil.unpack_archive(file_name, dest, type)
 
@@ -37,30 +37,33 @@ def install():
 
     # create fontman home directory
     print("creating fontman directory... :-)")
-    home_dir = expanduser('~/')
-    fontman_dir = home_dir + '.config/fontman'
+    home_dir = expanduser('~/AppData/Local/')
+    fontman_dir = home_dir + '/Fontman'
+    temp_dir = fontman_dir + '/temp'
+
     make_directory(fontman_dir)
+    make_directory(temp_dir)
 
     # determine system architecture and download artifacts and extract
     print("make sure you have connected to the internet... :-)")
 
     if '64bit' in arch:
-        print("downloading fontman artifacts for Linux x86_64")
-        download_file(base_url + fms_linux_64)
-        download_file(base_url + gui_linux_64)
+        print("downloading fontman artifacts for Windows x86_64")
+        download_file(base_url + fms_win_32, temp_dir)
+        download_file(base_url + gui_win_32, temp_dir)
 
         print("extracting...")
-        extract_archive(fms_linux_64, fontman_dir)
-        extract_archive(gui_linux_64, fontman_dir)
+        extract_archive(temp_dir + "/" + fms_win_32, fontman_dir)
+        extract_archive(temp_dir + "/" + gui_win_32, fontman_dir)
 
     else:
-        print("downloading fontman artifacts for Linux x86")
-        download_file(base_url + fms_linux_86)
-        download_file(base_url + gui_linux_86)
+        print("downloading fontman artifacts for Windows x86")
+        download_file(base_url + fms_win_86, temp_dir)
+        download_file(base_url + gui_win_86, temp_dir)
 
         print("extracting...")
-        extract_archive(fms_linux_86, fontman_dir)
-        extract_archive(gui_linux_86, fontman_dir)
+        extract_archive(temp_dir + "/" + fms_win_86, fontman_dir)
+        extract_archive(temp_dir + "/" + gui_win_86, fontman_dir)
 
     # change mode of artifacts to execute mode
     execute_mode(fontman_dir + "/fms")
