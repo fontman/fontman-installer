@@ -37,12 +37,17 @@ class MainWindow(QtGui.QMainWindow):
         self.process.finished.connect(lambda: p('Finished!'))
 
         print('Starting process')
-        self.process.start('python3', ['linux.py'])
+
+        if "Windows" in system:
+            self.process.start('python', ['windows.py'])
+        elif "Linux" in system:
+            self.process.start('python3', ['linux.py'])
 
     def append(self, text):
         cursor = self.textEdit.textCursor()
         cursor.movePosition(cursor.End)
         cursor.insertText(text)
+        self.textEdit.setTextCursor(cursor);
 
     def stdout_ready(self):
         text = str(self.process.readAllStandardOutput(), encoding='utf-8')
