@@ -1,0 +1,34 @@
+language: objective-c
+python:
+- 3.5.3
+before_install:
+- brew unlink pyenv
+- brew install pyenv
+- export PYENV_ROOT=/usr/local/opt/pyenv
+- eval "$(pyenv init -)"
+- "$SHELL -l"
+- env PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install 3.5.3
+- pyenv local 3.5.3
+- pyenv rehash
+- python --version
+- brew install PyQt --with-python3
+- pip3 install -r requirements.txt
+- pip3 install pyinstaller
+- pyinstaller --onefile fms.py
+- mkdir installer-darwin-x64
+- cp -rv assets dist/install installer-darwin-x64/
+- tar -zcvf installer-darwin-x64.tar.gz installer-darwin-x64
+- ls dist/
+install: true
+deploy:
+  overwrite: true
+  provider: releases
+  skip_cleanup: true
+  file:
+  - installer-darwin-x64.tar.gz
+  on:
+    tags: true
+    all_branches: true
+    repo: fontman/fontman-installer
+  api-key:
+    secure: QHsllSdb32+9897eK1HRy/PRK+fI3KLfsoiC5bjL9vhW15ZFGs4DMv4+SicNrqV8dyDV9zmdpjgF4Etu9ZxU+STgdtu50HZ51iWcjQGv6t2d7lGt0w8CJMOippKWMG42CPmcd6kvgU9W4LZDtLj06IOscmhUIFZboN3gtWGRpl+YF4Y7HYukb6rBBcWFWT5fdYq+hytdCJgf1q1MYPDoMMiawFTUAeLGp68EVJpAMDaPnZ03z9jSMulpKsiuB5SRnB8Tqzy9oew/rZrvlC33xTUPg9xNxpp+RgjaqgHyOrefeZSBFlTQY5aSWcZiusa0cBmjSu2D16qSONYiHmhKzDplsNPmDzcU38Js1MGA5uQWAqTOKLSy8Qr0mmaQ6lKFkz/JWeovCp22o6NaaO6N9aXIE48apOZ4IR68oOUlbQtu3fFubqoUkoQIo8lg92hS0KVJWe7L7MpQERqSA8f37gNuEvIwUfq1GhdGDiovMjOlhGO2wE/eqkmyPqiFTtX+swduaYcx8utdRXJjQhczXeOyfySONOo9qwWYWWFsDoOy9LkXdtGJzxEjkUxta2NUgXpsQ43Drm/6F2qjQBkQ/RIpRG3R4nytCISa8YgsrzEaYG6wnn0n6lfpBrVH6D7frzgRg64SfDNrSxin5XPhMRD4agBCdYAFKj8zOVUOM0A=
