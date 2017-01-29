@@ -39,7 +39,7 @@ class MainWindow(QtGui.QMainWindow):
         print('Starting process')
 
         if "Windows" in system:
-            self.process.start('python', ['windows.py'])
+            self.process.start('python', ['win32.py'])
         elif "Linux" in system:
             self.process.start('python3', ['linux.py'])
 
